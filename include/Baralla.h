@@ -1,14 +1,14 @@
 #ifndef BARALLA_H
 #define BARALLA_H
 #include "Carta.h"
-#include <sf2d.h>
+#include "HardwareInterface.h"
 
 class Baralla
 {
     public:
         // CONSTRUCTORS
         Baralla();
-		Baralla(int llavor, sf2d_texture *p[]);
+		Baralla(int llavor, HI::HITexture p[]);
 		//CONSULTORS
 		//Pre: Index>=0 i index<52 //Post: Retorna la carta que es troba en aquella posicio de la baralla
         Carta Get_Carta(int index)const;

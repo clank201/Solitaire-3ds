@@ -1,49 +1,44 @@
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <sstream>
-#include <stdlib.h> //rng
-#include <time.h> //rng
-#include <3ds.h>
-#include <sf2d.h>
-#include <sfil.h>
+#include <random> //rng
+#include <cstdlib>
 #include "Baralla.h"
+#include <cmath>
 #include "Joc.h"
 #include "Constants.h"
+#include "HardwareInterface.h"
+#include <time.h>
 
 using namespace std;
 
-void Carregar_Cartes(sf2d_texture *c[]);
+void Carregar_Cartes(HI::HITexture c[]);
 
 int main()
 {	
-	aptInit();
-	srvInit();
-	hidInit();
-	ndspInit();	
-	sf2d_init();
-	sf2d_set_clear_color(RGBA8(0x40, 0xFF, 0x40, 0xFF));
-	sf2d_set_3D(false);
+	HI::systemInit();
+	HI::setBackgroundColor(RGBA8(0x40, 0xFF, 0x40, 0xFF));
 	srand(time(NULL));
-	consoleInit(GFX_TOP, NULL);
+	HI::consoleInit();
 	
-	sf2d_texture* cartes[53]; //+1 pel darrera de la carta
+	HI::HITexture cartes[53]; //+1 pel darrera de la carta
 	Carregar_Cartes(cartes);
 	bool touchframeanterior=false, acciofeta=false;
 	Joc joc(rand()%12345,cartes);
 	Posicio_Carta origen, desti;
-	touchPosition touch;
-	u32 held, down;
+	point2D touch;
+	int held, down;
 			
-	while (aptMainLoop()) {
-		hidScanInput();
-		held = hidKeysHeld();
-		down = hidKeysDown();
-		if(!held)svcSleepThread(100000000);
-		if(held & KEY_START) break;
-		if(down & KEY_B) joc=Joc(rand()%12345,cartes);
+	while (HardwareInterface::aptMainLoop()) {
+		HI::updateHID();
+		held = HI::getKeysHeld();
+		down = HI::getKeysDown();
+		if(!held)HI::sleepThread(100000000);
+		if(held & HI::HI_KEY_START) break;
+		if(down & HI::HI_KEY_B) joc=Joc(rand()%12345,cartes);
 		if(!joc.a_guanyada){
-			if (held & KEY_TOUCH){
-				hidTouchRead(&touch);
+			if (held & HI::HI_KEY_TOUCH){
+				HI::updateTouch(touch);
 				if(!touchframeanterior){
 					origen=joc.Localitzar_Carta(touch);
 					joc.Processar_origen(origen); //return bool per saber si hem agafat una carta correcte?
@@ -54,35 +49,32 @@ int main()
 				joc.Accio(origen,desti,acciofeta);
 				joc.Netejar_Buffer();			
 			}
-			touchframeanterior=held & KEY_TOUCH;
+			touchframeanterior=held & HI::HI_KEY_TOUCH;
 
-			sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
-				joc.mostrar(touch); 
-			sf2d_end_frame();
-			sf2d_swapbuffers();
+			HI::startFrame(HI::SCREEN_BOT);
+			joc.mostrar(touch); 
+			HI::endFrame();
+			HI::swapBuffers();
 		}
 		else{
 			cout<<"HAS GUANYAT ENJORAGUENA"<<endl;
-			svcSleepThread(10000000000);
+			HI::sleepThread(10000000000);
 			break;
 		}
 	}
-	for(int i=0;i<53;i++)sf2d_free_texture(cartes[i]);
-	sf2d_fini();
-	ndspExit();
-	hidExit();
-	srvExit();
-	aptExit();
+	for(int i=0;i<53;i++)HI::freeTexture(cartes[i]);
+	HI::consoleFini();
+	HI::systemFini();
 	return 0;
 }
 
-void Carregar_Cartes(sf2d_texture *c[]){
+void Carregar_Cartes(HI::HITexture c[]){
 	string ruta="gamedata/", extensio=".png", nom;
 	for(int i=0;i<53;i++){
 		stringstream ss;
 		ss<<i+1;
 		nom=ruta+ss.str()+extensio;
 		cout<<"Carregant: "<<ss.str()+extensio<<endl;
-		c[i]=sfil_load_PNG_file(nom.c_str(), SF2D_PLACE_RAM);
+		c[i]=HI::loadPngFile(nom.c_str());
 	}
 }

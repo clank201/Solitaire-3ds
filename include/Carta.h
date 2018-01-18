@@ -1,6 +1,6 @@
 #ifndef CARTA_H
 #define CARTA_H
-#include <sf2d.h>
+#include "HardwareInterface.h"
 
 class Carta
 {
@@ -26,7 +26,7 @@ class Carta
 		
         //MODIFICADORS
         //Pre: -- //Post: La carta es modifica amb les dades entrades
-        void Modificar(char valor, char pal, sf2d_texture *t, sf2d_texture *t2);
+        void Modificar(char valor, char pal, HI::HITexture t, HI::HITexture t2);
         //Pre: -- //Post: Els elements intercanviats
         void Intercanviar(Carta &b);
         //Pre: -- //Post: Modifica la carta i passa a estar en l'estat que hem entrat
@@ -38,7 +38,7 @@ class Carta
     private:
         char a_valor, a_pal;
         bool a_oberta;
-		sf2d_texture *a_tex, *a_tex_dar;
+		HI::HITexture a_tex, a_tex_dar;
 };
 
 #endif // CARTA_H

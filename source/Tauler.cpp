@@ -1,6 +1,5 @@
 #include "Tauler.h"
 #include "Baralla.h"
-#include <3ds.h>
 #include "Constants.h"
 
 Tauler::Tauler(){
@@ -34,7 +33,7 @@ void Tauler::repartir(Baralla bar){
     }
 }
 
-void Tauler::mostrar(const touchPosition &t)const{
+void Tauler::mostrar(const point2D &t)const{
 	int px=margeD,py;
 	for(int i=0;i<a_n;i++){
 		//px=margeD*(i+1)+Card_Width*i;  
@@ -45,9 +44,9 @@ void Tauler::mostrar(const touchPosition &t)const{
 		}
 		px+=margeD+Card_Width;
 	}
-	py=t.py;
+	py=t.y;
 	for(int i=0;i<a_quantitat;i++){
-		a_agafades[i].mostrar(t.px-Card_Width/2,py-Card_Height/2);
+		a_agafades[i].mostrar(t.x-Card_Width/2,py-Card_Height/2);
 		py+=MOS;
 	}
 }

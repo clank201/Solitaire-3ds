@@ -1,10 +1,9 @@
 #include "Baralla.h"
 #include "Carta.h"
-#include <sf2d.h>
 
 const int CARTES_MAX=52, ITERACIONS=1000;
 
-Baralla::Baralla(int llavor, sf2d_texture *p[]){
+Baralla::Baralla(int llavor, HI::HITexture p[]){
     const char vecpals[]={'P','c','d','T'};
     char vecvalors[13];
     Carta::CrearVectorValors(vecvalors);

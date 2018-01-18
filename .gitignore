@@ -27,3 +27,11 @@
 *.exe
 *.out
 *.app
+/.vs
+*.sln
+*.vcxproj
+*.filters
+/Debug
+/Release
+/x64/Debug
+/Solitaire-3DS.vcxproj.user

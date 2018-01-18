@@ -3,20 +3,19 @@
 #include "PilaCartes.h"
 #include "Tauler.h"
 #include "Carta.h"
-#include <3ds.h>
-#include <sf2d.h>
+#include "HardwareInterface.h"
 
 class Joc
 {
     public:
-        Joc(int llavor, sf2d_texture *c[]);
+        Joc(int llavor, HI::HITexture c[]);
         //Pre: -- //Post: Printeja
-        void mostrar(const touchPosition&);
+        void mostrar(const point2D&);
         //Pre: -- //Post: Intenta realitzar un moviment en el joc
         void Accio(Posicio_Carta, Posicio_Carta, bool&);
 		void Processar_origen(Posicio_Carta origen);
 		void Netejar_Buffer();
-		Posicio_Carta Localitzar_Carta(touchPosition t)const;
+		Posicio_Carta Localitzar_Carta(point2D t)const;
 		
 		bool a_guanyada; //Estalvia un getter
 

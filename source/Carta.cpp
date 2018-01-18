@@ -12,7 +12,7 @@ void Carta::CrearVectorValors(char vecvalors[]){//aixo es podrà borrar
     for(int i=0;i<5;i++)vecvalors[temp[i]]=temp2[i];
 }
 
-void Carta::Modificar(char valor, char pal, sf2d_texture *t, sf2d_texture *t2){
+void Carta::Modificar(char valor, char pal, HI::HITexture t, HI::HITexture t2){
     a_valor=valor;
     a_pal=pal;
 	a_tex=t;
@@ -26,7 +26,7 @@ void Carta::Intercanviar(Carta &b){
 }
 
 bool Carta::esnegra()const{
-    return a_pal=='P' or a_pal=='T';
+    return a_pal=='P' || a_pal=='T';
 }
 
 bool Carta::esoberta()const{
@@ -38,8 +38,8 @@ void Carta::Set_obrir(bool obrir){
 }
 
 void Carta::mostrar(int posx, int posy)const{
-	if(a_oberta)sf2d_draw_texture(a_tex,posx,posy);
-	else sf2d_draw_texture(a_tex_dar,posx,posy);
+	if(a_oberta)HI::drawTexture(a_tex,posx,posy);
+	else HI::drawTexture(a_tex_dar,posx,posy);
 }
 
 bool Carta::Casen(Carta a, bool espila)const{//!aquesta funció s'ha doptimitzar
@@ -47,7 +47,7 @@ bool Carta::Casen(Carta a, bool espila)const{//!aquesta funció s'ha doptimitzar
     CrearVectorValors(vecvalors);
     bool cas=false;
     int index=0, index2=0; //petita =2 , grossa =1
-    if(a.esnegra()!=esnegra() or espila){
+    if(a.esnegra()!=esnegra() || espila){
         for(int i=0;i<=12;i++){
             if(a_valor==vecvalors[i])index=i;
             if(a.a_valor==vecvalors[i])index2=i;

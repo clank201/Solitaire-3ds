@@ -3,7 +3,6 @@
 #include "Carta.h"
 //#include "PilaCartes.h" //cal?
 #include "Baralla.h"
-#include <3ds.h>
 
 struct Posicio_Carta{
 	bool alapila;
@@ -19,7 +18,7 @@ class Tauler
 		
         //CONSULTORS
         //Pre: -- //Post: Mostra el tauler
-        void mostrar(const touchPosition&)const;
+        void mostrar(const point2D&)const;
         //Pre: 0<col<8 //Post: Retorna la ultima carta de la columna col o bé la "fila" carta de la columna col
         Carta Get_Carta_Tauler(int col, int fila=-1)const;
         //Pre: 0<col<8 //Post: Inserteix la carta inserir a la ultima posicio de la columna col
